@@ -20,9 +20,9 @@ namespace OverReacted.Infrastructure.Persistance.SeedData
         public void Seed()
         {
             modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Name = "Authenticated", },
-            new Role { Id = 2, Name = "Author", },
-            new Role { Id = 3, Name = "God", }
+            new Role { Id = 1, Name = "Authenticated", CreatedOnUTC=DateTimeOffset.UtcNow},
+            new Role { Id = 2, Name = "Author", CreatedOnUTC = DateTimeOffset.UtcNow },
+            new Role { Id = 3, Name = "God", CreatedOnUTC = DateTimeOffset.UtcNow }
              );
 
             modelBuilder.Entity<User>().HasData(
@@ -38,51 +38,62 @@ namespace OverReacted.Infrastructure.Persistance.SeedData
                VerifyCode = Guid.NewGuid().ToString("N"),
                Password = SecurityHelper.GetSha256Hash("12345678"),
                LastVerificationSent = DateTime.UtcNow,
+               Id= new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
            });
 
-            //       modelBuilder.Entity<Article>().HasData(
-            //      new Article
-            //      {
-            //          Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            //          Title = "npm audit: Broken by Design",
-            //          ShortDescription = "Found 99 vulnerabilities (84 moderately irrelevant, 15 highly irrelevant)",
-            //          CreatedOnUTC = DateTime.UtcNow,
-            //          EstimationReadTime = 14,
-            //      },
-            //        new Article
-            //        {
-            //            Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            //            Title = "Before You memo()",
-            //            ShortDescription = "Rendering optimizations that come naturally.",
-            //            CreatedOnUTC = DateTime.UtcNow,
-            //            EstimationReadTime = 5,
-            //        },
-            //             new Article
-            //             {
-            //                 Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            //                 Title = "The WET Codebase",
-            //                 ShortDescription = "Come waste your time with me.",
-            //                 CreatedOnUTC = DateTime.UtcNow,
-            //                 EstimationReadTime = 5,
-            //             }
-            //             ,
-            //             new Article
-            //             {
-            //                 Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            //                 Title = "Goodbye, Clean Code",
-            //                 ShortDescription = "Let clean code guide you. Then let it go.",
-            //                 CreatedOnUTC = DateTime.UtcNow,
-            //                 EstimationReadTime = 5,
-            //             },
-            //                   new Article
-            //                   {
-            //                       Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            //                       Title = "My Decade in Review",
-            //                       ShortDescription = "A personal reflection.",
-            //                       CreatedOnUTC = DateTime.UtcNow,
-            //                       EstimationReadTime = 26,
-            //                   }
-            //);
+            modelBuilder.Entity<Article>().HasData(
+           new Article
+           {
+               Id=Guid.NewGuid(),
+               Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+               Title = "npm audit: Broken by Design",
+               ShortDescription = "Found 99 vulnerabilities (84 moderately irrelevant, 15 highly irrelevant)",
+               CreatedOnUTC = DateTime.UtcNow,
+               EstimationReadTime = 14,
+               UserId= new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
+           },
+             new Article
+             {
+                 Id = Guid.NewGuid(),
+                 Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                 Title = "Before You memo()",
+                 ShortDescription = "Rendering optimizations that come naturally.",
+                 CreatedOnUTC = DateTime.UtcNow,
+                 EstimationReadTime = 5,
+                 UserId = new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
+             },
+                  new Article
+                  {
+                      Id = Guid.NewGuid(),
+                      Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                      Title = "The WET Codebase",
+                      ShortDescription = "Come waste your time with me.",
+                      CreatedOnUTC = DateTime.UtcNow,
+                      EstimationReadTime = 5,
+                      UserId = new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
+                  }
+                  ,
+                  new Article
+                  {
+                      Id = Guid.NewGuid(),
+                      Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                      Title = "Goodbye, Clean Code",
+                      ShortDescription = "Let clean code guide you. Then let it go.",
+                      CreatedOnUTC = DateTime.UtcNow,
+                      EstimationReadTime = 5,
+                      UserId = new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
+                  },
+                        new Article
+                        {
+                            Id = Guid.NewGuid(),
+                            Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            Title = "My Decade in Review",
+                            ShortDescription = "A personal reflection.",
+                            CreatedOnUTC = DateTime.UtcNow,
+                            EstimationReadTime = 26,
+                            UserId = new Guid("fbdceb4a-29c8-4cc2-b3f6-5ed60658f661")
+                        }
+     );
         }
     }
 }

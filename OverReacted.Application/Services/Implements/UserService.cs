@@ -11,6 +11,9 @@ using OverReacted.Application.Utilities;
 using OverReacted.Application.Dtos.Auth;
 using OverReacted.Application.Dtos.Api;
 using OverReacted.Application.Interfaces;
+using OverReacted.Application.Dtos;
+using Microsoft.Extensions.Options;
+using OverReacted.Application.Dtos.Settings;
 
 namespace OverReacted.Application.Services.Implements
 {
@@ -18,11 +21,15 @@ namespace OverReacted.Application.Services.Implements
     {
         private readonly IRepository<User> repository;
         private readonly ITokenProvider tokenProvider;
+        private readonly IEmailService emailService;
+        private readonly IOptions<AuthenticationSetting> options;
 
-        public UserService(IRepository<User> repository, ITokenProvider tokenProvider)
+        public UserService(IRepository<User> repository, ITokenProvider tokenProvider,IEmailService emailService, IOptions<AuthenticationSetting> options)
         {
             this.repository = repository;
             this.tokenProvider = tokenProvider;
+            this.emailService = emailService;
+            this.options = options;
         }
         public Task<bool> IsUserExistAsync(string email)
         {
@@ -31,7 +38,7 @@ namespace OverReacted.Application.Services.Implements
 
         public async Task<ApiResult> LoginUserAsync(string email, string password, CancellationToken cancellationToken)
         {
-            var UserInfo = await repository.TableNoTracking.FirstAsync(n => n.Email == email);
+            var UserInfo = await repository.TableNoTracking.Include(n=>n.Role).FirstAsync(n => n.Email == email);
             if (UserInfo.IsActive == false)
             {
                 return new ApiResult
@@ -93,6 +100,12 @@ namespace OverReacted.Application.Services.Implements
                 Avatar = user.Avatar,
             };
             await repository.AddAsync(NewUser, cancellationToken);
+            await emailService.SendEmailAsync(new MailRequest
+            {
+                Subject = "Verification Link",
+                Body = $"Your Verfication Link :{String.Format(options.Value.VerificationLink, NewUser.VerifyCode)}",
+                ToEmail = user.Email
+            });
             return NewUser;
         }
 
@@ -103,19 +116,28 @@ namespace OverReacted.Application.Services.Implements
             {
                 return false;
             }
+            var verificationCode = Guid.NewGuid().ToString("N");
             UserInfo.LastVerificationSent = DateTime.UtcNow;
+            UserInfo.VerifyCode = verificationCode;
             await repository.UpdateAsync(UserInfo, cancellationToken);
+            await emailService.SendEmailAsync(new MailRequest
+            {
+                Subject = "Reset Password Link",
+                Body = $"Your Reset Password Link :{String.Format(options.Value.VerificationLink, verificationCode)}",
+                ToEmail = email
+            });
             return true;
         }
 
         public async Task<bool> ValidateUserEmailAsync(string verifyCode, CancellationToken cancellationToken)
         {
             var userInfo = await repository.Table.SingleOrDefaultAsync(n => n.VerifyCode == verifyCode);
-            if (userInfo == null || userInfo?.LastVerificationSent?.AddMinutes(2) < DateTime.UtcNow || userInfo.IsActive == false)
+            if (userInfo == null || userInfo.IsActive == false)
             {
                 return false;
             }
             userInfo.IsEmailActive = true;
+            userInfo.VerifyCode = Guid.NewGuid().ToString("N");
             await repository.UpdateAsync(userInfo, cancellationToken);
             return true;
         }

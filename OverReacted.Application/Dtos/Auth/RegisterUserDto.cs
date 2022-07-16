@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OverReacted.Application.Dtos.Auth
 {
-    public interface RegisterUserDto
+    public class RegisterUserDto
     {
         public string Name { get; set; }
         public string Avatar { get; set; }

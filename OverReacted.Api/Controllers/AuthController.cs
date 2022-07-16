@@ -17,13 +17,11 @@ namespace OverReacted.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly IEmailService emailService;
         private readonly IOptions<AuthenticationSetting> options;
 
-        public AuthController(IUserService userService, IEmailService emailService, IOptions<AuthenticationSetting> options)
+        public AuthController(IUserService userService, IOptions<AuthenticationSetting> options)
         {
             this.userService = userService;
-            this.emailService = emailService;
             this.options = options;
         }
         [HttpPost("register")]
@@ -43,12 +41,7 @@ namespace OverReacted.Api.Controllers
                     });
                 }
                 var RegisterUser = await userService.RegisterUserAsync(user, cancellationToken);
-                await emailService.SendEmailAsync(new MailRequest
-                {
-                    Subject = "Verification Link",
-                    Body = $"Your Verfication Link :{String.Format(options.Value.VerificationLink, RegisterUser.VerifyCode)}",
-                    ToEmail = user.Email
-                });
+        
 
                 return Ok(new ApiResult
                 {
@@ -101,19 +94,19 @@ namespace OverReacted.Api.Controllers
             }
         }
 
-        [HttpGet("verify/{verifycode:string}")]
+        [HttpGet("verify/{verifycode}")]
         public async Task<IActionResult> VerifyUserEmail([FromRoute] string verifycode, CancellationToken cancellationToken)
         {
             var verifyUserEmail = await userService.ValidateUserEmailAsync(verifycode, cancellationToken);
             if (!verifyUserEmail)
             {
-                BadRequest();
+               return BadRequest();
             }
             return Ok();
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetUserPassword([FromRoute] ResetUserPasswordDto user, CancellationToken cancellationToken)
+        public async Task<IActionResult> ResetUserPassword(ResetUserPasswordDto user, CancellationToken cancellationToken)
         {
             var RestPassword = await userService.ResetUserPassword(user.Email, cancellationToken);
             if(RestPassword == false)

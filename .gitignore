@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-
+db
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -452,3 +452,7 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+[commit]
+    gpgsign = false

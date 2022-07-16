@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Jobguy.Infrastructure.Utilities;
+using Microsoft.EntityFrameworkCore;
 using OverReacted.Domain.Entities;
 using OverReacted.Infrastructure.Persistance.SeedData;
 using System;
@@ -21,6 +22,13 @@ namespace OverReacted.Infrastructure.Persistance
         public DbSet<Article> Articles { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Fluent Validations 
+            modelBuilder.RegisterEntityTypeConfiguration(typeof(UserConfiguration).Assembly);
+            #endregion
+            #region PostgressExtenstion
+            modelBuilder.HasPostgresExtension("uuid-ossp");
+            #endregion
+
             new OverReactedSeedData(modelBuilder).Seed();
             base.OnModelCreating(modelBuilder); 
         }
