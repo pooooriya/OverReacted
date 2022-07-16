@@ -1,0 +1,32 @@
+{
+  "name": "dan-abramov-blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.8.2",
+    "next": "12.1.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.4.0",
+    "react-redux": "^8.0.2",
+    "react-toggle": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "18.0.0",
+    "@types/react": "18.0.14",
+    "@types/react-dom": "18.0.5",
+    "@types/react-toggle": "^4.0.3",
+    "autoprefixer": "^10.4.7",
+    "eslint": "8.18.0",
+    "eslint-config-next": "12.1.6",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.4",
+    "typescript": "4.7.4"
+  }
+}

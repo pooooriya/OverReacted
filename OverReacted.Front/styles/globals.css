@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.react-toggle-track {
+    background-color: #0f1114 !important;
+}
+
+.react-toggle-track-check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
